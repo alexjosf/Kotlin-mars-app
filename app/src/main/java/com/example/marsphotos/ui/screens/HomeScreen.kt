@@ -17,15 +17,22 @@ package com.example.marsphotos.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.marsphotos.R
+import com.example.marsphotos.network.MarsPhoto
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
 
 @Composable
@@ -34,7 +41,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    ResultScreen(marsUiState, modifier.padding(top = contentPadding.calculateTopPadding()))
+    MarsPhotoCard(photo = marsUiState, modifier = modifier.fillMaxSize())
 }
 
 /**
@@ -48,6 +55,18 @@ fun ResultScreen(photos: String, modifier: Modifier = Modifier) {
     ) {
         Text(text = photos)
     }
+}
+
+@Composable
+fun MarsPhotoCard(photo: String, modifier: Modifier = Modifier) {
+    AsyncImage(
+        model = ImageRequest.Builder(context = LocalContext.current)
+            .data(photo)
+            .build(),
+        contentDescription = stringResource(R.string.mars_photo),
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Preview(showBackground = true)

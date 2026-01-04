@@ -20,7 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.marsphotos.network.MarsApi
+import com.example.marsphotos.data.NetworkMarsPhotosRepository
 import kotlinx.coroutines.launch
 
 class MarsViewModel : ViewModel() {
@@ -28,17 +28,15 @@ class MarsViewModel : ViewModel() {
     var marsUiState: String by mutableStateOf("")
         private set
 
-    /**
-     * Call getMarsPhotos() on init so we can display status immediately.
-     */
     init {
         getMarsPhotos()
     }
 
     fun getMarsPhotos() {
         viewModelScope.launch {
-            val listResult = MarsApi.retrofitService.getPhotos()
-            marsUiState = "Success: ${listResult.size} Mars photos retrieved"
+            val marsPhotosRepository = NetworkMarsPhotosRepository()
+            val result = marsPhotosRepository.getMarsPhotos()[0]
+            marsUiState = "${result.imgSrc}"
         }
     }
 }
