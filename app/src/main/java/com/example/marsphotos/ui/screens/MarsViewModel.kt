@@ -42,12 +42,10 @@ class MarsViewModel : ViewModel() {
 
     private fun getMarsPhotos() {
         viewModelScope.launch {
-            marsUiState = try {
-                val listResult = MarsApi.retrofitService.getPhotos()
-                MarsUiState.Success(listResult.toString())
-            } catch (e: IOException) {
-                MarsUiState.Error
-            }
+            val listResult = MarsApi.retrofitService.getPhotos()
+            marsUiState = MarsUiState.Success(
+                "Success: ${listResult.size} Mars photos retrieved"
+            )
         }
     }
 }
